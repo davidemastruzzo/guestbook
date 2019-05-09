@@ -8,6 +8,7 @@ import org.springframework.util.ClassUtils;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
@@ -42,8 +43,8 @@ public abstract class BaseEntity implements Persistable<Long> {
    */
 
   @Id
-  @SequenceGenerator(name = "GLOBAL_SEQ", sequenceName = "GLOBAL_SEQ", initialValue = 1000)
-  @GeneratedValue(strategy = SEQUENCE, generator = "GLOBAL_SEQ")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false)
   @Nullable
   private Long id;
 
