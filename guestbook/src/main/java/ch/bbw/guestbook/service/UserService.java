@@ -9,11 +9,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 import static java.util.Collections.emptyList;
 
 @AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
+
+    @Resource
+    private CaptchaService captchaService;
 
     private UserRepository userRepository;
 
@@ -27,8 +32,9 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean registrationRequestIsValid(RegistrationRequest registrationRequest) {
+        String username = registrationRequest.getUsername();
         if (userRepository.findAllByDeletedFalse().stream()
-                .anyMatch(user -> user.getUsername().equals(registrationRequest.getUsername()))) {
+                .anyMatch(user -> user.getUsername().equals(username)) || username.contains(" ")) {
             return false;
         }
 
@@ -41,6 +47,10 @@ public class UserService implements UserDetailsService {
         }
 
         if (!registrationRequest.getPassword().equalsIgnoreCase(registrationRequest.getRetypePassword())) {
+            return false;
+        }
+
+        if (!captchaService.isValid(registrationRequest.getRecaptchaResponse())){
             return false;
         }
 
