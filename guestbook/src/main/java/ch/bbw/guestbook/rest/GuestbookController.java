@@ -1,9 +1,6 @@
 package ch.bbw.guestbook.rest;
 
-import ch.bbw.guestbook.converter.EntryConverter;
-import ch.bbw.guestbook.domain.User;
 import ch.bbw.guestbook.exchange.EntryDto;
-import ch.bbw.guestbook.repository.EntryRepository;
 import ch.bbw.guestbook.repository.UserRepository;
 import ch.bbw.guestbook.service.EntryService;
 import lombok.AllArgsConstructor;
@@ -28,8 +25,6 @@ public class GuestbookController {
     @Resource
     private EntryService entryService;
 
-    private final UserRepository userRepository;
-
     @GetMapping("/entries")
     @ResponseBody
     public ResponseEntity<List<EntryDto>> getAllEntries() {
@@ -41,5 +36,4 @@ public class GuestbookController {
     public ResponseEntity createEntry(@RequestBody EntryDto entryDto, Principal principal) {
         return new ResponseEntity<>(entryService.createEntry(entryDto, principal), HttpStatus.OK);
     }
-
 }
