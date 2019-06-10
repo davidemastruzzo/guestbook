@@ -39,6 +39,7 @@ public class UserAccountController {
                     .password(bCryptPasswordEncoder.encode(registrationRequest.getPassword()))
                     .build();
             account = userRepository.save(account);
+
             return new ResponseEntity<>(UserConverter.convert(account),HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

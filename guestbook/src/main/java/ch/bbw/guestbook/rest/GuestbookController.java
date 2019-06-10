@@ -32,8 +32,9 @@ public class GuestbookController {
     }
 
     @PostMapping("/entry")
-    @ResponseBody
-    public ResponseEntity createEntry(@RequestBody EntryDto entryDto, Principal principal) {
-        return new ResponseEntity<>(entryService.createEntry(entryDto, principal), HttpStatus.OK);
+    public ResponseEntity<EntryDto> createEntry(@RequestBody String message, Principal principal) {
+        System.out.println(message);
+        System.out.println(principal.getName());
+        return new ResponseEntity<>(entryService.createEntry(message, principal), HttpStatus.OK);
     }
 }

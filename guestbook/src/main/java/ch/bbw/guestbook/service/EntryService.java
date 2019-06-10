@@ -21,14 +21,14 @@ public class EntryService {
 
     private final UserRepository userRepository;
 
-    public List<EntryDto> createEntry(EntryDto entryDto, Principal principal) {
+    public EntryDto createEntry(String message, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
         if (user == null) {
             throw new GuestbookRuntimeException();
         }
-        Entry entry = Entry.builder().message(entryDto.getMessage()).user(user).build();
+        Entry entry = Entry.builder().message(message).user(user).build();
         entryRepository.save(entry);
-        return getAllEntries();
+        return EntryConverter.convert(entry);
     }
 
     public List<EntryDto> getAllEntries() {
